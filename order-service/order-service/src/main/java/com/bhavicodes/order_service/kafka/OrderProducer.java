@@ -30,6 +30,7 @@ public class OrderProducer {
         this.topic = topic;
     }
 
+
     public void sendMessage(OrderEvent orderEvent) {
         logger.info(String.format("🚀 Sending order event: {" + orderEvent.toString() + "}"));
         Message<OrderEvent> message = MessageBuilder
