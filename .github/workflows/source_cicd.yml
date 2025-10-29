@@ -20,6 +20,8 @@ jobs:
         service: [ "base-domains", "email-service", "order-service", "stock-service" ]
 
 
+
+
     steps:
       # Step 1: Checkout repository
       - name: Checkout Code
