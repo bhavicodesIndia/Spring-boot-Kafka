@@ -1,4 +1,4 @@
-name: Simple CI/CD Pipeline
+name: Spring Boot Kafka CI/CD
 
 on:
   push:
@@ -8,29 +8,32 @@ on:
 
 jobs:
   build:
-    name: Build Spring Boot Project
+    name: Build Spring Boot App
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout repository
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      # Step 2: Set up Java
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      # 👇 change this path if your pom.xml is inside a subfolder
+      # Step 3: Build project using Maven inside base-domains folder
       - name: Build Application
-        working-directory: ./springboot-kafka-project
+        working-directory: ./base-domains
         run: mvn clean package -DskipTests
 
-      - name: Archive Jar Artifact
+      # Step 4: Upload JAR artifact for inspection
+      - name: Upload JAR
         uses: actions/upload-artifact@v4
         with:
-          name: springboot-jar
-          path: ./Spring-boot-Kafka/target/*.jar
+          name: base-domain-jar
+          path: ./base-domains/target/*.jar
 
   deploy:
     name: Deploy Stage
@@ -43,5 +46,6 @@ jobs:
 
       - name: Simulate Deployment
         run: |
-          echo "✅ Build completed successfully"
-          echo "🚀 Deployment simulation finished"
+          echo "✅ Build successful!"
+          echo "🚀 Simulating deployment stage..."
+          echo "Your Spring Boot JAR is ready to deploy."
