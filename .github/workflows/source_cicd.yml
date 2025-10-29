@@ -23,7 +23,7 @@ jobs:
 
       # 👇 change this path if your pom.xml is inside a subfolder
       - name: Build Application
-        working-directory: ./Spring-boot-Kafka
+        working-directory: ./springboot-kafka-project
         run: mvn clean package -DskipTests
 
       - name: Archive Jar Artifact
