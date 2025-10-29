@@ -1,5 +1,6 @@
 name: Spring Boot Kafka CI/CD
 
+
 on:
   push:
     branches: [ "master" ]
@@ -13,35 +14,37 @@ on:
 
 jobs:
   build:
-    name: Build Spring Boot App
+    name: Build All Spring Boot Microservices
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        service: [ "base-domains", "email-service", "order-service", "stock-service" ]
-
-
-
+        service:
+          - base-domains/base-domains
+          - email-service/email-service
+          - order-service/order-service
+          - stock-service/stock-service
 
     steps:
-      # Step 1: Checkout repository
+      # Step 1: Checkout the repository
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # Step 2: Set up Java
+      # Step 2: Set up Java 17
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      # Step 3: Build project using Maven inside base-domains folder
-      - name: Build Application
-        working-directory: ./base-domains/base-domains
+      # Step 3: Build each microservice
+      - name: Build ${{ matrix.service }}
+        working-directory: ./${{ matrix.service }}
         run: mvn clean package -DskipTests
 
-      # Step 4: Upload JAR artifact for inspection
-      - name: Upload JAR
+      # Step 4: Upload the JAR artifact
+      - name: Upload Artifact for ${{ matrix.service }}
         uses: actions/upload-artifact@v4
         with:
-          name: base-domain-jar
-          path: ./base-domains/base-domains/target/*.jar
+          name: ${{ matrix.service }}-jar
+          path: ./${{ matrix.service }}/target/*.jar
+
